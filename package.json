@@ -12,19 +12,18 @@
   "bin": {
     "wiremock": "cli.js"
   },
+  "scripts": {
+    "install": "node install.js"
+  },
+  "license": "Apache-2.0",
   "contributors": [
     {
       "name": "Rafal Galka",
       "email": "rafal.galka@modernweb.pl"
     }
   ],
-  "license": "Apache-2.0",
-  "scripts": {
-    "install": "node install.js"
-  },
   "bugs": {
     "url": "https://github.com/Hagith/wiremock-standalone/issues"
   },
-  "homepage": "https://github.com/Hagith/wiremock-standalone#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/Hagith/wiremock-standalone#readme"
 }
