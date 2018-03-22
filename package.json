@@ -1,0 +1,30 @@
+{
+  "name": "wiremock-standalone",
+  "version": "2.15.0",
+  "description": "WireMock standalone binary",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Hagith/wiremock-standalone.git"
+  },
+  "keywords": [
+    "wiremock"
+  ],
+  "bin": {
+    "wiremock": "cli.js"
+  },
+  "contributors": [
+    {
+      "name": "Rafal Galka",
+      "email": "rafal.galka@modernweb.pl"
+    }
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "install": "node install.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Hagith/wiremock-standalone/issues"
+  },
+  "homepage": "https://github.com/Hagith/wiremock-standalone#readme",
+  "devDependencies": {}
+}
