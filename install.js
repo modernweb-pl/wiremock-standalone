@@ -1,18 +1,40 @@
-const spawn = require('child_process').spawnSync;
+const http = require('https');
+const fs = require('fs');
 const version = require('./package.json').version;
 
-const wiremockVersion = version.split('-')[0];
-const url = 'http://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/'
+function download(url, dest, cb) {
+  const errorHandler = (message) => {
+    fs.unlink(dest);
+    return cb(message);
+  };
+
+  const file = fs.createWriteStream(dest);
+  const request = http.get(url, (response) => {
+    if (response.statusCode !== 200) {
+      return errorHandler('Response status was ' + response.statusCode);
+    }
+
+    response.pipe(file);
+
+    file.on('finish', () => {
+      file.close(cb);
+    });
+  });
+
+  request.on('error', (err) => errorHandler(err.message));
+  file.on('error', (err) => errorHandler(err.message));
+}
+
+const wiremockVersion = version.split('-').shift();
+const url = 'https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/'
   + `${wiremockVersion}/wiremock-standalone-${wiremockVersion}.jar`;
 
 console.log(`Downloading WireMock standalone from Maven Central...\n  ${url}`);
 
-const wiremockBuild = spawn('curl', [ '-s', '-S', '-L', '-o', './wiremock-standalone.jar', url ], {
-  stdio: 'inherit',
+download(url, './wiremock-standalone.jar', (error) => {
+  if (error) {
+    throw new Error(`Downloading WireMock jar from Maven Central failed: ${error}`);
+  }
+
+  console.log('Done.');
 });
-
-if (wiremockBuild.status !== 0) {
-  throw new Error('Downloading WireMock jar from Maven Central failed');
-}
-
-console.log('Done.');
