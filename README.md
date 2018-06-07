@@ -17,3 +17,7 @@ Usage (as script in `package.json`):
   }
 }
 ```
+
+Maven Override:
+
+You can use the `MAVEN_BASE_URL` environment variable to override the public `https://repo1.maven.org/maven2` URL.
