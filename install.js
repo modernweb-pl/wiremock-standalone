@@ -5,7 +5,7 @@ const mavenBaseURL = process.env.MAVEN_BASE_URL || 'https://repo1.maven.org/mave
 
 function download(url, dest, cb) {
   const errorHandler = (message) => {
-    fs.unlink(dest);
+    fs.unlink(dest, () => {});
     return cb(message);
   };
 
