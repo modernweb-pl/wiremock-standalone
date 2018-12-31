@@ -1,6 +1,6 @@
 {
   "name": "wiremock-standalone",
-  "version": "2.19.0-2",
+  "version": "2.20.0-1",
   "description": "WireMock standalone binary",
   "repository": {
     "type": "git",
