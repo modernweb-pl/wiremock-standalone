@@ -1,8 +1,8 @@
 # WireMock Standalone for NPM
 
 [![npm version](https://img.shields.io/npm/v/wiremock-standalone)](https://www.npmjs.com/package/wiremock-standalone)
-![Maven Central](https://img.shields.io/maven-central/v/com.github.tomakehurst/wiremock-standalone?label=wiremock)
-![npm](https://img.shields.io/npm/dw/wiremock-standalone)
+[![Wiremock Standalone](https://img.shields.io/maven-central/v/com.github.tomakehurst/wiremock-standalone?label=wiremock)](http://wiremock.org/docs/running-standalone/)
+[![npm](https://img.shields.io/npm/dw/wiremock-standalone)](https://www.npmjs.com/package/wiremock-standalone)
 
 This package downloads [WireMock standalone](http://wiremock.org/docs/running-standalone/) from Maven Central and provides simple CLI wrapper for NPM.
 
