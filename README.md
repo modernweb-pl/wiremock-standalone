@@ -28,7 +28,7 @@ Usage (as script in `package.json`):
 
 ### Java runtime arguments
 
-You can pass options to Java runtime with `--java-arg` CLI argument:
+You can pass options to Java runtime with `--java-arg` CLI argument. All system properties are collected and appended to wiremock's `--permitted-system-keys` option.
 
 ```bash
 wiremock --java-arg -Dmy.custom.var=some-value --root-dir ./mock
