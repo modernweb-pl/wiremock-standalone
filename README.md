@@ -26,6 +26,14 @@ Usage (as script in `package.json`):
 
 ## Options
 
+### Java runtime arguments
+
+You can pass options to Java runtime with `--java-arg` CLI argument:
+
+```bash
+wiremock --java-arg -Dmy.custom.var=some-value --root-dir ./mock
+```
+
 ### Custom Maven repository URL
 
 You can use the `MAVEN_BASE_URL` environment variable to override the public `https://repo1.maven.org/maven2` URL.

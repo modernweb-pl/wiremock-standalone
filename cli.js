@@ -3,10 +3,22 @@
 
 const spawnSync = require('child_process').spawnSync;
 
-const compilerPath = require.resolve('./wiremock-standalone.jar');
+const jarPath = require.resolve('./wiremock-standalone.jar');
+const argv = process.argv;
+const wiremockArgs = [];
+const javaArgs = [];
+
+for (let i = 2; i < argv.length; i++) {
+  if (argv[i] === '--java-arg') {
+    javaArgs.push(argv[++i]);
+  } else {
+    wiremockArgs.push(argv[i]);
+  }
+}
+
 const result = spawnSync(
   'java',
-  [ '-jar', compilerPath ].concat(process.argv.slice(2)),
+  javaArgs.concat('-jar', jarPath, ...wiremockArgs),
   { stdio: 'inherit' },
 );
 
