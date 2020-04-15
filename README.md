@@ -38,6 +38,14 @@ wiremock --java-arg -Dmy.custom.var=some-value --root-dir ./mock
 
 You can use the `MAVEN_BASE_URL` environment variable to override the public `https://repo1.maven.org/maven2` URL.
 
+## HOWTOs
+
+### Passing ENV variables with [env-cmd](https://www.npmjs.com/package/env-cmd)
+
+```bash
+yarn env-cmd -f [path/to/.env] yarn wiremock --global-response-templating --verbose --root-dir ./mocks --permitted-system-keys=WIREMOCK_.*
+```
+
 ## Donation
 
 If this project help you reduce time to develop, you can give me a cup of coffee :)
