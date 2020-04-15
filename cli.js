@@ -3,10 +3,40 @@
 
 const spawnSync = require('child_process').spawnSync;
 
-const compilerPath = require.resolve('./wiremock-standalone.jar');
+const jarPath = require.resolve('./wiremock-standalone.jar');
+const argv = process.argv;
+const wiremockArgs = [];
+const javaArgs = [];
+const permittedSystemKeys = [];
+
+for (let i = 2; i < argv.length; i++) {
+  if (argv[i] === '--permitted-system-keys') {
+    permittedSystemKeys.push(argv[++i]);
+    continue;
+  }
+
+  if (argv[i] === '--java-arg') {
+    const javaArg = argv[++i].trim();
+
+    // collect system properties and append to `--permitted-system-keys`
+    if (javaArg.startsWith('-D')) {
+      permittedSystemKeys.push(javaArg.substr(2).split('=')[0]);
+    }
+
+    javaArgs.push(javaArg);
+    continue;
+  }
+
+  wiremockArgs.push(argv[i]);
+}
+
+if (permittedSystemKeys.length) {
+  wiremockArgs.push('--permitted-system-keys', permittedSystemKeys.join(','));
+}
+
 const result = spawnSync(
   'java',
-  [ '-jar', compilerPath ].concat(process.argv.slice(2)),
+  javaArgs.concat('-jar', jarPath, ...wiremockArgs),
   { stdio: 'inherit' },
 );
 
