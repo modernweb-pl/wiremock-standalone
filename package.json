@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/Hagith/wiremock-standalone/issues"
   },
-  "homepage": "https://github.com/Hagith/wiremock-standalone#readme"
+  "homepage": "https://github.com/Hagith/wiremock-standalone#readme",
+  "dependencies": {
+    "request": "~2.88.2"
+  }
 }
