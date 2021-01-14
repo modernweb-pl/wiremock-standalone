@@ -1,28 +1,40 @@
-const request = require('request');
+const axios = require('axios');
 const fs = require('fs');
-const version = require('./package.json').version;
 const mavenBaseURL = process.env.MAVEN_BASE_URL || 'https://repo1.maven.org/maven2';
+const mavenPath = 'com/github/tomakehurst/wiremock-standalone';
 
-function download(url, dest, cb) {
-  const errorHandler = (err) => {
-    fs.unlink(dest, () => void 0);
-    return cb(err);
-  };
+function resolveWiremockVersion() {
+  return axios.get(`${mavenBaseURL}/${mavenPath}/maven-metadata.xml`)
+    .then(({ data: meta }) => {
+      if (process.env.WIREMOCK_VERSION) {
+        const check = new RegExp(`<version>${process.env.WIREMOCK_VERSION}<\/version>`);
+        if (!check.test(meta)) {
+          throw new Error(`Unknown WIREMOCK_VERSION value: ${process.env.WIREMOCK_VERSION}`);
+        }
 
-  const file = fs.createWriteStream(dest).on('error', errorHandler);
-  request.get(url).on('error', errorHandler).pipe(file);
+        return process.env.WIREMOCK_VERSION;
+      }
+
+      // latest
+      return meta.match(/<release>([.\d]+)<\/release>/m)[1];
+    });
 }
 
-const wiremockVersion = version.split('-').shift();
-const url = mavenBaseURL + '/com/github/tomakehurst/wiremock-standalone/'
-  + `${wiremockVersion}/wiremock-standalone-${wiremockVersion}.jar`;
+function download(url, dest) {
+  return axios.get(url, { responseType: 'stream' })
+    .then(({ data }) => data.pipe(fs.createWriteStream(dest)));
+}
 
-console.log(`Downloading WireMock standalone from Maven Central...\n  ${url}`);
+resolveWiremockVersion()
+  .then((version) => {
+    const url = `${mavenBaseURL}/${mavenPath}/${version}/wiremock-standalone-${version}.jar`;
 
-download(url, './wiremock-standalone.jar', (error) => {
-  if (error) {
-    throw new Error(`Downloading WireMock jar from Maven Central failed: ${error.message}`);
-  }
+    console.log(`Downloading WireMock standalone from Maven Central...\n ${url}`);
 
-  console.log('Done.');
-});
+    return download(url, './wiremock-standalone.jar')
+      .then(() => console.log('Done.'));
+  })
+  .catch((e) => {
+    console.error(`\x1b[31m Error: ${e.message}`);
+    process.exit(1);
+  });
