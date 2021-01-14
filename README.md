@@ -1,10 +1,9 @@
 # WireMock Standalone for NPM
 
-[![npm version](https://img.shields.io/npm/v/wiremock-standalone)](https://www.npmjs.com/package/wiremock-standalone)
 [![Wiremock Standalone](https://img.shields.io/maven-central/v/com.github.tomakehurst/wiremock-standalone?label=wiremock)](http://wiremock.org/docs/running-standalone/)
 [![npm](https://img.shields.io/npm/dw/wiremock-standalone)](https://www.npmjs.com/package/wiremock-standalone)
 
-This package downloads [WireMock standalone](http://wiremock.org/docs/running-standalone/) from Maven Central and provides simple CLI wrapper for NPM.
+This package downloads latest [WireMock standalone](http://wiremock.org/docs/running-standalone/) from Maven Central and provides simple CLI wrapper for NPM.
 
 ## How to use
 
@@ -33,6 +32,10 @@ You can pass options to Java runtime with `--java-arg` CLI argument. All system 
 ```bash
 wiremock --java-arg -Dmy.custom.var=some-value --root-dir ./mock
 ```
+
+### Force WireMock version
+
+By default, the latest version is downloaded when this package is installed. If you like to use a different version you can set the `WIREMOCK_VERSION` environment variable.
 
 ### Custom Maven repository URL
 
