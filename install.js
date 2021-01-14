@@ -1,18 +1,25 @@
 const axios = require('axios');
 const fs = require('fs');
-const mavenBaseURL = process.env.MAVEN_BASE_URL || 'https://repo1.maven.org/maven2';
-const mavenPath = 'com/github/tomakehurst/wiremock-standalone';
+const { lilconfigSync } = require('lilconfig');
 
-function resolveWiremockVersion() {
-  return axios.get(`${mavenBaseURL}/${mavenPath}/maven-metadata.xml`)
+const explorer = lilconfigSync('wiremock', { searchPlaces: ['.wiremock', 'package.json'] });
+const config = (explorer.search() || { config: {} }).config;
+const options = {
+  version: process.env.WIREMOCK_VERSION || config.version,
+  mavenRepoURL: process.env.MAVEN_REPO_URL || config.mavenRepoURL || 'https://repo1.maven.org',
+};
+const mavenPath = 'maven2/com/github/tomakehurst/wiremock-standalone';
+
+function resolveVersion() {
+  return axios.get(`${options.mavenRepoURL}/${mavenPath}/maven-metadata.xml`)
     .then(({ data: meta }) => {
-      if (process.env.WIREMOCK_VERSION) {
-        const check = new RegExp(`<version>${process.env.WIREMOCK_VERSION}<\/version>`);
-        if (!check.test(meta)) {
-          throw new Error(`Unknown WIREMOCK_VERSION value: ${process.env.WIREMOCK_VERSION}`);
+      if (options.version) {
+        const regexp = new RegExp(`<version>${options.version}<\/version>`);
+        if (!regexp.test(meta)) {
+          throw new Error(`Unknown WireMock version: ${options.version}`);
         }
 
-        return process.env.WIREMOCK_VERSION;
+        return options.version;
       }
 
       // latest
@@ -25,9 +32,9 @@ function download(url, dest) {
     .then(({ data }) => data.pipe(fs.createWriteStream(dest)));
 }
 
-resolveWiremockVersion()
+resolveVersion()
   .then((version) => {
-    const url = `${mavenBaseURL}/${mavenPath}/${version}/wiremock-standalone-${version}.jar`;
+    const url = `${options.mavenRepoURL}/${mavenPath}/${version}/wiremock-standalone-${version}.jar`;
 
     console.log(`Downloading WireMock standalone from Maven Central...\n ${url}`);
 
