@@ -1,6 +1,5 @@
 # WireMock Standalone for NPM
 
-[![npm version](https://img.shields.io/npm/v/wiremock-standalone)](https://www.npmjs.com/package/wiremock-standalone)
 [![Wiremock Standalone](https://img.shields.io/maven-central/v/com.github.tomakehurst/wiremock-standalone?label=wiremock)](http://wiremock.org/docs/running-standalone/)
 [![npm](https://img.shields.io/npm/dw/wiremock-standalone)](https://www.npmjs.com/package/wiremock-standalone)
 
@@ -24,19 +23,35 @@ Usage (as script in `package.json`):
 }
 ```
 
-## Options
+## Downloader configuration
 
-### Java runtime arguments
+By default, the latest stable version of WireMock JAR is downloaded from public Maven repository (`https://repo1.maven.org`).
+You can override this behavior (by precedence):
+- setting environment variables: `MAVEN_REPO_URL`, `WIREMOCK_VERSION`
+- creating `.wiremock` configuration file in your project (JSON):
+  ```json
+  {
+    "version": "[version]",
+    "mavenRepoURL": "[custom Maven URL]"
+  }
+  ```
+- adding `wiremock` property in your `package.json`:
+  ```json
+  "wiremock": {
+    "version": "[version]",
+    "mavenRepoURL": "[custom Maven URL]"
+  }
+  ```
+
+## Runtime options
+
+### Java arguments
 
 You can pass options to Java runtime with `--java-arg` CLI argument. All system properties are collected and appended to wiremock's `--permitted-system-keys` option.
 
 ```bash
 wiremock --java-arg -Dmy.custom.var=some-value --root-dir ./mock
 ```
-
-### Custom Maven repository URL
-
-You can use the `MAVEN_BASE_URL` environment variable to override the public `https://repo1.maven.org/maven2` URL.
 
 ## HOWTOs
 
