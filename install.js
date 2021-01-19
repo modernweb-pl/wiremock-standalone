@@ -6,9 +6,9 @@ const explorer = lilconfigSync('wiremock', { searchPlaces: ['.wiremock', 'packag
 const config = (explorer.search() || { config: {} }).config;
 const options = {
   version: process.env.WIREMOCK_VERSION || config.version,
-  mavenRepoURL: process.env.MAVEN_REPO_URL || config.mavenRepoURL || 'https://repo1.maven.org',
+  mavenRepoURL: process.env.MAVEN_BASE_URL || process.env.MAVEN_REPO_URL || config.mavenRepoURL || 'https://repo1.maven.org/maven2',
 };
-const mavenPath = 'maven2/com/github/tomakehurst/wiremock-standalone';
+const mavenPath = 'com/github/tomakehurst/wiremock-standalone';
 
 function resolveVersion() {
   return axios.get(`${options.mavenRepoURL}/${mavenPath}/maven-metadata.xml`)
