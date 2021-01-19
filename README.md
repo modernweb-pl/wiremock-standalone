@@ -25,7 +25,7 @@ Usage (as script in `package.json`):
 
 ## Downloader configuration
 
-By default, the latest stable version of WireMock JAR is downloaded from public Maven repository (`https://repo1.maven.org`).
+By default, the latest stable version of WireMock JAR is downloaded from public Maven repository (`https://repo1.maven.org/maven2`).
 You can override this behavior (by precedence):
 - setting environment variables: `MAVEN_REPO_URL`, `WIREMOCK_VERSION`
 - creating `.wiremock` configuration file in your project (JSON):
