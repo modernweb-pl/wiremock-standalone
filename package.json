@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Hagith/wiremock-standalone#readme",
   "dependencies": {
-    "axios": "~0.21.1",
-    "lilconfig": "~2.0.2"
+    "axios": "~0.21.3",
+    "lilconfig": "~2.0.3"
   }
 }
