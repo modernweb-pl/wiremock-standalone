@@ -24,8 +24,8 @@ function resolveVersion() {
         return options.version;
       }
 
-      // latest
-      return meta.match(/<release>([.\d]+)<\/release>/m)[1];
+      // latest stable
+      return meta.match(/(?<=<version>)[.\d]+(?=<\/version>)/g).pop();
     });
 }
 
