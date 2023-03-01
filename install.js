@@ -13,7 +13,9 @@ const mavenPath = 'com/github/tomakehurst';
 const name = options.jreVersion === 'jre8' ? 'wiremock-jre8-standalone' : 'wiremock-standalone';
 
 function resolveVersion() {
-  return axios.get(`${options.mavenRepoURL}/${mavenPath}/${name}/maven-metadata.xml`)
+  const metadataUrl = `${options.mavenRepoURL}/${mavenPath}/${name}/maven-metadata.xml`;
+  console.log(`Resolving WireMock version from Maven metadata...\n ${metadataUrl}`);
+  return axios.get(metadataUrl)
     .then(({ data: meta }) => {
       if (options.version) {
         const regexp = new RegExp(`<version>${options.version}<\/version>`);
