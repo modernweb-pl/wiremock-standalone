@@ -10,13 +10,12 @@ const options = {
   jreVersion: process.env.JRE_VERSION || process.env.JRE_VERSION || config.jreVersion || 'jre8',
 };
 
-const versionMajor = options.version.substring(0, options.version.indexOf('.'));
-let mavenPath;
-
-if (versionMajor && Number(versionMajor) < 3) {
-  mavenPath='com/github/tomakehurst'
-} else {
-  mavenPath='org.wiremock'
+let mavenPath = 'org/wiremock';
+if (options.version) {
+  const major = options.version.substring(0, options.version.indexOf('.'));
+  if (major && Number(major) < 3) {
+    mavenPath = 'com/github/tomakehurst';
+  }
 }
 
 const name = options.jreVersion === 'jre8' ? 'wiremock-jre8-standalone' : 'wiremock-standalone';
