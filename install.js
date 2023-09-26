@@ -9,7 +9,16 @@ const options = {
   mavenRepoURL: process.env.MAVEN_BASE_URL || process.env.MAVEN_REPO_URL || config.mavenRepoURL || 'https://repo1.maven.org/maven2',
   jreVersion: process.env.JRE_VERSION || process.env.JRE_VERSION || config.jreVersion || 'jre8',
 };
-const mavenPath = 'com/github/tomakehurst';
+
+const versionMajor = options.version.substring(0, options.version.indexOf('.'));
+let mavenPath;
+
+if (versionMajor && Number(versionMajor) < 3) {
+  mavenPath='com/github/tomakehurst'
+} else {
+  mavenPath='org.wiremock'
+}
+
 const name = options.jreVersion === 'jre8' ? 'wiremock-jre8-standalone' : 'wiremock-standalone';
 
 function resolveVersion() {
