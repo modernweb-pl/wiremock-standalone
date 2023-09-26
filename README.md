@@ -11,7 +11,9 @@ This package downloads [WireMock standalone](http://wiremock.org/docs/running-st
 ```bash
 npm i -D wiremock-standalone
 # OR
-yar add -D wiremock-standalone
+pnpm add -D wiremock-standalone
+# OR
+yarn add -D wiremock-standalone
 ```
 
 Usage (as script in `package.json`):

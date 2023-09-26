@@ -7,21 +7,22 @@ const config = (explorer.search() || { config: {} }).config;
 const options = {
   version: process.env.WIREMOCK_VERSION || config.version,
   mavenRepoURL: process.env.MAVEN_BASE_URL || process.env.MAVEN_REPO_URL || config.mavenRepoURL || 'https://repo1.maven.org/maven2',
-  jreVersion: process.env.JRE_VERSION || process.env.JRE_VERSION || config.jreVersion || 'jre8',
+  jreVersion: process.env.JRE_VERSION || config.jreVersion || 'jre8',
 };
 
-let mavenPath = 'org/wiremock';
+const LEGACY_ARTIFACT = 'com/github/tomakehurst';
+let artifact = 'org/wiremock';
 if (options.version) {
   const major = options.version.substring(0, options.version.indexOf('.'));
   if (major && Number(major) < 3) {
-    mavenPath = 'com/github/tomakehurst';
+    artifact = LEGACY_ARTIFACT;
   }
 }
 
-const name = options.jreVersion === 'jre8' ? 'wiremock-jre8-standalone' : 'wiremock-standalone';
+const name = artifact === LEGACY_ARTIFACT && options.jreVersion === 'jre8' ? 'wiremock-jre8-standalone' : 'wiremock-standalone';
 
 function resolveVersion() {
-  const metadataUrl = `${options.mavenRepoURL}/${mavenPath}/${name}/maven-metadata.xml`;
+  const metadataUrl = `${options.mavenRepoURL}/${artifact}/${name}/maven-metadata.xml`;
   console.log(`Resolving WireMock version from Maven metadata...\n ${metadataUrl}`);
   return axios.get(metadataUrl)
     .then(({ data: meta }) => {
@@ -46,7 +47,7 @@ function download(url, dest) {
 
 resolveVersion()
   .then((version) => {
-    const url = `${options.mavenRepoURL}/${mavenPath}/${name}/${version}/${name}-${version}.jar`;
+    const url = `${options.mavenRepoURL}/${artifact}/${name}/${version}/${name}-${version}.jar`;
 
     console.log(`Downloading WireMock standalone from Maven Central...\n ${url}`);
 
